@@ -139,7 +139,21 @@ anchor_mask = np.array([
 ])
 
 
+class Identity(torch.nn.Module):
+    def __init__(self):
+        super(Identity, self).__init__()
+
+    def forward(self, x):
+        return x
+
+
 model = YOLOv3([128, 640, 640], 15, args.backbone_model_file).to(args.device)
+model.backbone.bn = None
+model.backbone.classifier = None
+
+if args.print_model:
+    print(model)
+
 optimizer = optim.Adam(model.yolo_head.parameters(), lr=args.lr)
 loss_fns = [YOLOLoss(anchor_boxes[mask], 14) for mask in anchor_mask]
 
