@@ -66,8 +66,6 @@ class YOLOTrainDataset(Dataset):
                     box_xy = (box[0:2] + box[2:4]) / 2  # box center
                     anchor_idx = np.where(anchor_eq)[0][0]
                     grid_x, grid_y = (box_xy // (1 / grid_size)).astype(int)
-                    if (grid_x == 12):
-                        print(box_xy)
                     class_probs = np.zeros(14)
                     indices = y_train[:, 4].astype(int)
                     indices = indices[indices != 14]
@@ -101,9 +99,16 @@ class YOLOTrainDataset(Dataset):
         pt /= self.max_h
         pl /= self.max_w
         y_train = self.csv[self.csv['image_id'] == filename.strip('.png')].values[:, [4, 5, 6, 7, 2]]
-        y_train[:, 1] += pt
-        y_train[:, 0] += pl
-        y_train = y_train.astype(float)
+        # prev_y_train = np.copy(y_train)
+        # y_train[:, 1] += pt
+        # y_train[:, 0] += pl
+        # y_train = y_train.astype(float)
+        # if (y_train[:, :4] >= 1).any():
+        #     print(pt, pl)
+        #     print(prev_y_train)
+        #     print()
+        #     print(y_train)
+        #     assert True == False, "bbox coordinates must be less than 1"
         labels = self.__generate_target__(y_train)
 
         return image, labels
