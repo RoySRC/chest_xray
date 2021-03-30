@@ -4,6 +4,7 @@ from PIL import Image
 from skimage import exposure
 from torch.utils.data import Dataset
 
+
 class YOLOTrainDataset(Dataset):
     def __init__(self, X, csv, image_source, image_shape, anchor_boxes, anchor_mask,
                  grid_sizes, dtype=torch.float16):
@@ -64,7 +65,9 @@ class YOLOTrainDataset(Dataset):
                     box = r[:4]
                     box_xy = (box[0:2] + box[2:4]) / 2  # box center
                     anchor_idx = np.where(anchor_eq)[0][0]
-                    grid_x, grid_y = (box_xy // (1/grid_size)).astype(int)
+                    grid_x, grid_y = (box_xy // (1 / grid_size)).astype(int)
+                    if (grid_x == 12):
+                        print(box_xy)
                     class_probs = np.zeros(14)
                     indices = y_train[:, 4].astype(int)
                     indices = indices[indices != 14]
@@ -97,9 +100,10 @@ class YOLOTrainDataset(Dataset):
 
         pt /= self.max_h
         pl /= self.max_w
+        print(pt, pl)
         y_train = self.csv[self.csv['image_id'] == filename.strip('.png')].values[:, [4, 5, 6, 7, 2]]
-        y_train[:, [1, 3]] += pt
-        y_train[:, [0, 2]] += pl
+        y_train[:, 1] += pt
+        y_train[:, 0] += pl
         y_train = y_train.astype(float)
         labels = self.__generate_target__(y_train)
 
