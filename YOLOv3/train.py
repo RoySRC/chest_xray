@@ -148,8 +148,8 @@ class Identity(torch.nn.Module):
 
 
 model = YOLOv3([128, 640, 640], 15, args.backbone_model_file).to(args.device)
-model.backbone.bn = None
-model.backbone.classifier = None
+delattr(model.backbone, 'bn')
+delattr(model.backbone, 'classifier')
 
 if args.print_model:
     print(model)
