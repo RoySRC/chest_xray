@@ -100,7 +100,6 @@ class YOLOTrainDataset(Dataset):
 
         pt /= self.max_h
         pl /= self.max_w
-        print(pt, pl)
         y_train = self.csv[self.csv['image_id'] == filename.strip('.png')].values[:, [4, 5, 6, 7, 2]]
         y_train[:, 1] += pt
         y_train[:, 0] += pl
