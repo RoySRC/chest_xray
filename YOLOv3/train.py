@@ -190,7 +190,7 @@ if os.path.isfile(args.model_file):
     print("loading model file...")
     checkpoint = torch.load(args.model_file)
     checkpoint_epoch = checkpoint['epoch']
-    model.load_state_dict(checkpoint['state_dict'])
+    model.yolo_head.load_state_dict(checkpoint['state_dict'])
     optimizer.load_state_dict(checkpoint['optimizer'])
     print('pretrained epochs:', checkpoint_epoch,
           '| train loss:', f"{checkpoint['train_loss']:.5f}",
