@@ -1,0 +1,10 @@
+._*
+*.csv
+chest-xray
+.DS_Store
+images
+*.tar
+*.zip
+test
+train*
+*.pt
