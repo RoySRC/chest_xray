@@ -272,7 +272,7 @@ for epoc in range(checkpoint_epoch, iterations):
         'epoch': checkpoint_epoch,
         'train_loss': losses,
         'val_loss': val_loss,
-        'state_dict': model.state_dict(),
+        'state_dict': model.yolo_head.state_dict(),
         'optimizer': optimizer.state_dict()
     }
     torch.save(checkpoint, args.model_file)
