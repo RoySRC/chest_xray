@@ -95,7 +95,11 @@ class YOLOTrainDataset(Dataset):
         image = np.expand_dims(image, axis=0)
         image = torch.tensor(image / 255.0, dtype=self.dtype)
 
+        pt /= self.max_h
+        pl /= self.max_w
         y_train = self.csv[self.csv['image_id'] == filename.strip('.png')].values[:, [4, 5, 6, 7, 2]]
+        y_train[:, [1, 3]] += pt
+        y_train[:, [0, 2]] += pl
         y_train = y_train.astype(float)
         labels = self.__generate_target__(y_train)
 
