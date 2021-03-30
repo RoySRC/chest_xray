@@ -231,7 +231,10 @@ for epoc in range(checkpoint_epoch, iterations):
             for prediction, target, loss_fn in zip(y_hat, y, loss_fns):
                 detection_head_losses.append(loss_fn(prediction, target.to(args.device)))
 
-            val_loss.append(sum(detection_head_losses).item())
+            detection_head_losses = torch.cat(detection_head_losses)
+            sum_detection_head_losses = torch.sum(detection_head_losses)
+            sum_detection_head_losses.requires_grad = False
+            val_loss.append(sum_detection_head_losses.item())
 
             # Print statistics
             elapsed = time.time() - batch_start_time
